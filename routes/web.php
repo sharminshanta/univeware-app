@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// User Login & Register Route
+Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::get('/register', [AuthenticatedSessionController::class, 'store'])->name('register');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
