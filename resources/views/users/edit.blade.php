@@ -58,9 +58,12 @@
                             <div class="row gx-3 mb-3">
                                 <!-- Form Group (organization name)-->
                                 <div class="col-md-6">
-                                    <label class="small mb-1" for="inputOrgName">Prefix name</label>
-                                    <input class="form-control" name="prefixname" id="inputOrgName" type="text" placeholder="Enter prefix name"
-                                           value="{{ $userDetails->prefixname ?? old('prefixname') }}">
+                                    <label class="small mb-1" for="prefixname">Prefix name</label>
+                                    <select class="form-control" name="prefixname">
+                                        <option value="Mr" {{ $userDetails->prefixname == 'Mr' ? 'selected' : '' }}>Mr</option>
+                                        <option value="Mrs" {{ $userDetails->prefixname == 'Mrs' ? 'selected' : '' }}>Mrs</option>
+                                        <option value="Ms" {{ $userDetails->prefixname == 'Ms' ? 'selected' : '' }}>Ms</option>
+                                    </select>
                                     @error('prefixname')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -95,6 +98,18 @@
                                     <label class="small mb-1" for="inputUserPhoto">User photo</label>
                                     <input type="file" name="photo" class="form-control" placeholder="User Photo" />
                                     @error('photo')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="type">User Type</label>
+                                    <select class="form-control" name="type">
+                                        <option value="admin" {{ $userDetails->type == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        <option value="user" {{ $userDetails->type == 'user' ? 'selected' : '' }}>User</option>
+                                    </select>
+                                    @error('type')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

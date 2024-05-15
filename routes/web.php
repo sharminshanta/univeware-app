@@ -42,6 +42,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
             Route::post('/update', [UserController::class, 'update'])->name('update');
             Route::delete('/delete', [UserController::class, 'destroy'])->name('delete');
+
+            /** Trashed User Grid */
+            Route::get('/trashed', [UserController::class, 'trashedView'])->name('trashed');
+
+            /** Restoring Trashed Users */
+            Route::get('/trashed-restore', [UserController::class, 'TrashedRestore'])->name('restore');
+            Route::delete('/trashed-delete', [UserController::class, 'trashedDelete'])->name('force_delete');
         });
     });
 });

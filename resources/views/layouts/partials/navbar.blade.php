@@ -17,13 +17,13 @@
             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{ route('users.grid') }}">User List</a>
-                    <a class="nav-link" href="#!">Light Sidenav</a>
+                    <a class="nav-link" href="{{ route('users.trashed') }}">Soft Deleted Users</a>
                 </nav>
             </div>
         </div>
     </div>
     <div class="sb-sidenav-footer">
         <div class="small">Logged in as:</div>
-        {{ auth()->user()->name }}
+        {{ auth()->user()->username  }} | {{ auth()->user()->type  }}
     </div>
 </nav>

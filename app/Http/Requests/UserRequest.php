@@ -32,12 +32,12 @@ class UserRequest extends FormRequest
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'regex:/^\S*$/u', 'unique:'.User::class],
-           // 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'email' => [
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            /*'email' => [
                 'required',
                 'email',
                 Rule::unique('users')->ignore($this->user()->id, 'id')
-            ],
+            ],*/
             'password' => ['required', 'confirmed', Password::defaults()],
             'photo' => 'mimes:jpeg,jpg,png,gif|max:10000',
         ];

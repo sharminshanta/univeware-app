@@ -2,7 +2,7 @@
 @section('title') Users @endsection
 
 @section('content')
-    <h1 class="mt-4">Users</h1>
+    <h1 class="mt-4">Soft Deleted Users</h1>
     <div class="card-body">
         @if (Session::get('error'))
             <div class="alert alert-danger">
@@ -69,18 +69,15 @@
                     <th>{{ $user->created_at }}</th>
                     <th>{{ $user->updated_at }}</th>
                     <th>
-                        <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-sm btn-info" title="User Details"> View</a>
-                        @if(\Illuminate\Support\Facades\Auth::user()->type == 'admin')
-                            <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-sm btn-primary" title="Edit User"> Edit</a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Delete User"
-                               onclick="if(confirm('Are you sure?')){document.getElementById('delete-form-{{ $user->id }}').submit();}">
-                                <form action="{{ route('users.delete', ['id' => $user->id]) }}" id="delete-form-{{ $user->id }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                Delete
-                            </a>
-                        @endif
+                        <a href="{{ route('users.restore', ['id' => $user->id]) }}" class="btn btn-sm btn-primary" title="User Details"> Restore</a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Delete User"
+                           onclick="if(confirm('Are you sure?')){document.getElementById('force-delete-form-{{ $user->id }}').submit();}">
+                            <form action="{{ route('users.force_delete', ['id' => $user->id]) }}" id="force-delete-form-{{ $user->id }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            Force Delete
+                        </a>
                     </th>
                 </tr>
             @endforeach
