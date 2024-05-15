@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/users', [UserController::class, 'index'])->name('user.grid');
+    Route::get('/users', [UserController::class, 'index'])->name('users.grid');
 });
 
 require __DIR__.'/auth.php';
