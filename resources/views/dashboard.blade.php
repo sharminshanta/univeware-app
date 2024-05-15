@@ -1,4 +1,5 @@
 @extends('layouts.default')
+@section('title') Dashboard @endsection
 
 @section('content')
     <h1 class="mt-4">Dashboard</h1>
