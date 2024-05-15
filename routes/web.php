@@ -29,7 +29,21 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/users', [UserController::class, 'index'])->name('users.grid');
+    Route::prefix('users')->group(function () {
+        Route::name('users.')->group(function () {
+            /** Grid */
+            Route::get('/', [UserController::class, 'index'])->name('grid');
+
+
+            /** Add, Update, Delete */
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/store', [UserController::class, 'store'])->name('store');
+            Route::get('/show/{id}', [UserController::class, 'show'])->name('show');
+            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
+            Route::post('/update', [UserController::class, 'update'])->name('update');
+            Route::delete('/delete', [UserController::class, 'destroy'])->name('delete');
+        });
+    });
 });
 
 require __DIR__.'/auth.php';

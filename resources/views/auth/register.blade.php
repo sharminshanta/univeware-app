@@ -21,7 +21,7 @@
             <x-input-label for="name" :value="__('Username')" />
             <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
-            <small>No Space Allowed: david_gilmour</small>
+            <small>No Space Allowed: e.g. david_gilmour</small>
         </div>
 
         <!-- Email Address -->

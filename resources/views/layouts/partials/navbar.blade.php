@@ -16,7 +16,7 @@
             </a>
             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="#!">User List</a>
+                    <a class="nav-link" href="{{ route('users.grid') }}">User List</a>
                     <a class="nav-link" href="#!">Light Sidenav</a>
                 </nav>
             </div>

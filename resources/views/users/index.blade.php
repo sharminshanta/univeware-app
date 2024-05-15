@@ -32,7 +32,7 @@
             </div>
 
             <div class="col-2">
-                <a href="{{ route('users.grid') }}" class="btn btn-primary">+ Add New</a>
+                <a href="{{ route('users.create') }}" class="btn btn-primary">+ Add New</a>
             </div>
             <br><br><br>
         </div>
@@ -69,9 +69,16 @@
                     <th>{{ $user->created_at }}</th>
                     <th>{{ $user->updated_at }}</th>
                     <th>
-                        <a href="#" class="btn btn-sm btn-info" title="User Details"> View</a>
-                        <a href="#" class="btn btn-sm btn-primary" title="Edit User"> Edit</a>
-                        <a href="#" class="btn btn-sm btn-danger" title="Delete User"> Delete</a>
+                        <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-sm btn-info" title="User Details"> View</a>
+                        <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-sm btn-primary" title="Edit User"> Edit</a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Delete User"
+                           onclick="if(confirm('Are you sure?')){document.getElementById('delete-form-{{ $user->id }}').submit();}">
+                            <form action="{{ route('users.delete', ['id' => $user->id]) }}" id="delete-form-{{ $user->id }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            Delete
+                        </a>
                     </th>
                 </tr>
             @endforeach
@@ -79,3 +86,4 @@
         </table>
     </div>
 @endsection
+
