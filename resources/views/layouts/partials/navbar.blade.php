@@ -17,7 +17,9 @@
             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{ route('users.grid') }}">User List</a>
-                    <a class="nav-link" href="{{ route('users.trashed') }}">Soft Deleted Users</a>
+                    @if(auth()->user()->type == 'admin')
+                        <a class="nav-link" href="{{ route('users.trashed') }}">Soft Deleted Users</a>
+                    @endif
                 </nav>
             </div>
         </div>
