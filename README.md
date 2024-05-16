@@ -1,4 +1,4 @@
-# Metronic 7 + Laravel 10 + PHP 8.2
+# Laravel 10 + PHP 8.2
 
 ### Introduction
 Laravel has a set of requirements in order to ron smoothly in specific environment. Please see [requirements](https://laravel.com/docs/7.x#server-requirements) section in Laravel documentation.
