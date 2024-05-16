@@ -3,6 +3,25 @@
 
 @section('content')
     <div class="container-xl px-4 mt-4">
+        @if (Session::get('error'))
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (Session::get('error') as $error)
+                        <li>{!! $error !!}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (Session::get('success'))
+            <div class="alert alert-success">
+                <ul>
+                    @foreach (Session::get('success') as $success)
+                        <li>{!! $success !!}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <h1 class="mt-4">User Profile</h1>
 
         <!-- Account page navigation-->

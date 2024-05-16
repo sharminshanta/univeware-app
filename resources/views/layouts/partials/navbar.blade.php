@@ -19,6 +19,7 @@
                     <a class="nav-link" href="{{ route('users.grid') }}">User List</a>
                     @if(auth()->user()->type == 'admin')
                         <a class="nav-link" href="{{ route('users.trashed') }}">Soft Deleted Users</a>
+                        <a class="nav-link" href="{{ route('action-log') }}">Action Log</a>
                     @endif
                 </nav>
             </div>

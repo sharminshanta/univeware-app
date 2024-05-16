@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserSaved;
 use App\Http\Requests\UserRequest;
-use App\Models\CompanyEntity;
-use App\Models\UserEntity;
+use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+    public function __construct(
+        protected UserService $userService
+    ) {
+    }
+
     /**
      * Display a listing of the resource.
      * Local Ref: http://127.0.0.1:8000/users
@@ -24,7 +29,7 @@ class UserController extends Controller
     public function index(): View|\Illuminate\Foundation\Application|Factory|Application
     {
         return view('users.index', [
-            'users' => User::whereNot('id', auth()->user()->getAuthIdentifier())->get()
+            'users' => $this->userService->all()
         ]);
     }
 
@@ -77,12 +82,16 @@ class UserController extends Controller
         $validated['type'] = 'user';
 
         try {
-            $user = User::updateOrCreate(['id' => $validated['id'] ?? null], $validated);
+           // $user = User::updateOrCreate(['id' => $validated['id'] ?? null], $validated);
+            $user = $this->userService->create($validated);
+
+            // Store data into 'details'
+            UserSaved::dispatch($user);
 
             if ($user->wasRecentlyCreated) {
                 $notifications['success'][] = "User created successfully!";
             } else {
-                $notifications['success'][] = "Company updated successfully!";
+                $notifications['success'][] = "user updated successfully!";
             }
         } catch (\Exception $ex) {
             Log::channel('slack')
@@ -105,7 +114,8 @@ class UserController extends Controller
      */
     public function show(string $id): Factory|View|\Illuminate\Foundation\Application|Application
     {
-        $userDetails = User::findOrFail($id);
+        $userDetails = $this->userService->find($id);
+
         return view('users.show', ['userDetails' => $userDetails]);
     }
 
@@ -117,7 +127,8 @@ class UserController extends Controller
      */
     public function edit(string $id): Factory|View|\Illuminate\Foundation\Application|Application
     {
-        $userDetails = User::findOrFail($id);
+        $userDetails = $this->userService->find($id);
+
         return view('users.edit', ['userDetails' => $userDetails]);
     }
 
@@ -148,7 +159,10 @@ class UserController extends Controller
         }
 
         try {
-            $user = User::updateOrCreate(['id' => $request->query('id') ?? null], $request->all());
+            $user = $this->userService->update($request->all(), $request->query('id'));
+
+            // Store data into 'details'
+            UserSaved::dispatch($user);
 
             if ($user->wasRecentlyCreated) {
                 $notifications['success'][] = "User created successfully!";
@@ -179,7 +193,10 @@ class UserController extends Controller
     {
         try {
             if (! empty($request->query('id'))) {
-                User::where(['id' => $request->query('id')])->delete();
+                $this->userService->delete($request->query('id'));
+
+                // Store data into 'details'
+                UserSaved::dispatch($this->userService->find($request->query('id')));
 
                 $notifications['success'][] = "User deleted successfully!";
             } else {
@@ -205,7 +222,7 @@ class UserController extends Controller
     public function trashedView(Request $request): Factory|View|\Illuminate\Foundation\Application|Response|Application|ResponseFactory
     {
         if (auth()->user()->type == User::TYPE[1]) {
-            return view('users.trashed', ['users' => User::onlyTrashed()->get()]);
+            return view('users.trashed', ['users' => $this->userService->getTrashedAll()]);
         }
 
         return response('', 404);
@@ -222,7 +239,7 @@ class UserController extends Controller
         try {
             if (auth()->user()->type == User::TYPE[1]
                 && ! empty($request->query('id'))) {
-                User::withTrashed()->find($request->query('id'))->restore();
+                $this->userService->trashedRestore($request->query('id'));
 
                 $notifications['success'][] = "User restored successfully.";
             } else {
@@ -250,11 +267,11 @@ class UserController extends Controller
         try {
             if (auth()->user()->type == User::TYPE[1]
                 && ! empty($request->query('id'))) {
-                User::withTrashed()->find($request->query('id'))->forceDelete();
+                $this->userService->forceDelete($request->query('id'));
 
                 $notifications['success'][] = "User deleted successfully.";
             } else {
-                $notifications['error'][] = "Invalid company!";
+                $notifications['error'][] = "Invalid user!";
             }
         } catch (\Exception $ex) {
             Log::channel('slack')->alert('``` ' . $ex->getMessage() . ' ```', [
