@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Events\UserSaved;
 use App\Models\Detail;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 class SaveUserBackgroundInformation
@@ -34,9 +33,9 @@ class SaveUserBackgroundInformation
          * Separate the method of the current route of user's action
          *
          * @var array $actionName = array:2 [▼
-        0 => "App\Http\Controllers\UserController"
-        1 => "store"
-        ]
+                0 => "App\Http\Controllers\UserController"
+                1 => "store"
+            ]
          */
         $actionName = explode("@", $action);
 
